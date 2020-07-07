@@ -1,0 +1,366 @@
+// First key is an example
+// type -> STRING, INT, UINT, SHORT, USHORT, DOUBLE, FLOAT, BOOL ("0", or "1") OR ENUM (1:WERT, 2:WERT2, ...) -> ends up in dropdown menu, stored as UINT
+// strings in one line only, may contain \n \t \r
+// min, max and index can be set if you want
+// accesslavel = 0=everyone, 1 = only logged in users, 2 = setup/maintainence, 3 = guru
+
+// [NewValue]
+// type=FLOAT
+// descr=Value
+// unit=String
+// value=1.123
+// visible=false
+// group=First Group
+// toolTip=If you change this value the world will burst in pieces
+// imagePath=newImage.jpg
+// help=this is for a more detailed help text than the tooltip.\nGod knows where to display that
+// defaultVal=1.0
+// displayHint=not needed right now
+// min=-9999999
+// max=99999999
+// index=-1
+// accessLevel=0
+
+
+// Systemlog
+[SystemLogPath]
+type=String
+descr=SystemLogPath
+value=C:\temp\838log
+unit=
+visible=true
+group=Anlage
+toolTip=Laserleistun
+imagePath=
+help=Laserleistung
+defaultVal=C:\temp\838log
+displayHint=
+min=0
+max=4000
+index=-1
+accessLevel=2
+
+// Viewer
+[ImageViewer]
+type=BOOL
+descr=
+value=false
+unit=
+visible=true
+group=Anlage
+toolTip=
+imagePath=
+help=
+defaultVal=true
+displayHint=
+min=0
+max=4000
+index=-1
+accessLevel=2
+
+// MTX_IP
+[MTX_IP]
+type=String
+descr=MTX IP
+value=192.168.142.250
+unit=
+visible=true
+group=Anlage
+toolTip=Laserleistun
+imagePath=alien2.png
+help=Laserleistung
+defaultVal=192.168.142.250
+displayHint=
+min=0
+max=4000
+index=-1
+accessLevel=2
+
+// OPCPort
+[OPCPort]
+type=INT
+descr=OPCPort
+value=4840
+unit=
+visible=true
+group=Anlage
+toolTip=OPCPort
+imagePath=alien2.png
+help=OPCPort
+defaultVal=4840
+displayHint=
+min=0
+max=10000
+index=-1
+accessLevel=2
+
+[OffsetTCPX]
+type=FLOAT
+descr=OffsetTCPX [mm]
+value=8.200
+unit=
+visible=true
+group=Kamera
+toolTip=OffsetTCPX
+imagePath=alien2.png
+help=OffsetTCPX
+defaultVal=8000
+displayHint=
+min=0
+max=10000
+index=-1
+accessLevel=2
+
+[OffsetTCPY]
+type=FLOAT
+descr=OffsetTCPY [mm]
+value=8.200
+unit=
+visible=true
+group=Kamera
+toolTip=OffsetTCPY
+imagePath=alien2.png
+help=OffsetTCPX
+defaultVal=8000
+displayHint=
+min=0
+max=10000
+index=-1
+accessLevel=2
+
+
+
+// ExposureTime
+[ExposureTime]
+type=FLOAT
+descr=ExposureTime [ms]
+value=8.200
+unit=
+visible=true
+group=Kamera
+toolTip=ExposureTime
+imagePath=alien2.png
+help=ExposureTime
+defaultVal=8000
+displayHint=
+min=0
+max=10000
+index=-1
+accessLevel=2
+
+//RasterImageFilename
+[RasterImageFilename]
+type=String
+descr=RasterImageFilename
+value=C:\temp
+unit=
+visible=true
+group=CV
+toolTip=RasterImageFilename
+imagePath=
+help=RasterImageFilename
+defaultVal=C:\temp
+displayHint=
+min=0
+max=4000
+index=-1
+accessLevel=2
+
+
+// DFTKernelSize
+[DFTKernelSize]
+type=INT
+descr=GrößeKernelFourier
+unit=Pixelcount
+value=10
+visible=true
+group=Bildverarbeitung
+toolTip=Bestimmt die Größe des für die Filterung im Frequenzraum verwendeten Kernels
+imagePath=
+help=Bestimmt die Größe des für die Filterung im Frequenzraum verwendeten Kernels
+defaultVal=10
+displayHint=
+min=0
+max=50
+index=-1
+accessLevel=2
+
+// Threshold
+[ImgBinThreshold]
+type=INT
+descr=Schwellwert für die Binarisierung
+unit=Grauwertstufe
+value=90
+visible=true
+group=Bildverarbeitung
+toolTip=Schwellwert für die Binarisierung des Bildes
+imagePath=
+help=Schwellwert für die Binarisierung des Bildes
+defaultVal=90
+displayHint=
+min=0
+max=255
+index=-1
+accessLevel=2
+
+// ErodeVerticalSizeX
+[ErodeVerticalSizeX]
+type=INT
+descr=Größe Strukturelement für Erodieren X
+unit=Pixel
+value=2
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Erodieren X
+imagePath=
+help=Größe Strukturelement für Erodieren X
+defaultVal=2
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// ErodeVerticalSizeY
+[ErodeVerticalSizeY]
+type=INT
+descr=Größe Strukturelement für Erodieren Y
+unit=Pixel
+value=19
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Erodieren Y
+imagePath=
+help=Größe Strukturelement für Erodieren Y
+defaultVal=19
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// ErodeHorizontalSizeX
+[ErodeHorizontalSizeX]
+type=INT
+descr=Größe Strukturelement für Erodieren X
+unit=Pixel
+value=17
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Erodieren X
+imagePath=
+help=Größe Strukturelement für Erodieren X
+defaultVal=17
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// ErodeHorizontalSizeY
+[ErodeHorizontalSizeY]
+type=INT
+descr=Größe Strukturelement für Erodieren Y
+unit=Pixel
+value=3
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Erodieren Y
+imagePath=
+help=Größe Strukturelement für Erodieren Y
+defaultVal=3
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// DilateVerticalSizeX
+[DilateVerticalSizeX]
+type=INT
+descr=Größe Strukturelement für Dilatation X
+unit=Pixel
+value=3
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Dilatation X
+imagePath=
+help=Größe Strukturelement für Dilatation X
+defaultVal=3
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// DilateHorizontalSizeY
+[DilateHorizontalSizeY]
+type=INT
+descr=Größe Strukturelement für Dilatation Y
+unit=Pixel
+value=4
+visible=true
+group=Bildverarbeitung
+toolTip=Größe Strukturelement für Dilatation Y
+imagePath=
+help=Größe Strukturelement für Dilatation Y
+defaultVal=4
+displayHint=
+min=0
+max=100
+index=-1
+accessLevel=2
+
+// size of Entire area to screen X
+[ImgSizeX]
+type=INT
+descr=Größe Bereich Rastern X
+unit=mm
+value=170
+visible=true
+group=Rastern
+toolTip=Größe Bereich Rastern X
+imagePath=
+help=Größe Bereich Rastern X
+defaultVal=170
+displayHint=
+min=0
+max=300
+index=-1
+accessLevel=2
+
+// size of Entire area to screen Y
+[ImgSizeY]
+type=INT
+descr=Größe Bereich Rastern Y
+unit=mm
+value=170
+visible=true
+group=Rastern
+toolTip=Größe Bereich Rastern Y
+imagePath=
+help=Größe Bereich Rastern Y
+defaultVal=170
+displayHint=
+min=0
+max=300
+index=-1
+accessLevel=2
+
+// Größe eines Pixels in mm
+[PixelSize]
+type=DOUBLE
+descr=Größe eines Pixels in mm
+unit=mm
+value=0.0048
+visible=true
+group=Rastern
+toolTip=Größe eines Pixels in mm
+imagePath=
+help=Größe eines Pixels in mm
+defaultVal=0.0048
+displayHint=
+min=0
+max=1
+index=-1
+accessLevel=2
