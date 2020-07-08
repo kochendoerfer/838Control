@@ -109,12 +109,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>H:\Programmierung\Libs_Include\x64\PCL 1.8.0\3rdParty\Boost\include\boost-1_61;H:\Programmierung\Libs_Include\x64\OpenCV\include;H:\Programmierung\Libs_Include\x64\Basler\include;H:\Programmierung\Libs_Include\x64\open62541\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Programmierung\Libs_Include\x64\PCL 1.8.0\3rdParty\Boost\include\boost-1_61;C:\Programmierung\Libs_Include\x64\OpenCV\include;C:\Programmierung\Libs_Include\x64\Basler\include;C:\Programmierung\Libs_Include\x64\open62541\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>H:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;H:\Programmierung\Libs_Include\x64\Basler\lib\x64;H:\Programmierung\Libs_Include\x64\OpenCV\lib;H:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;C:\Programmierung\Libs_Include\x64\Basler\lib\x64;C:\Programmierung\Libs_Include\x64\OpenCV\lib;C:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world411d.lib;Ws2_32.lib;open62541.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
@@ -152,14 +152,14 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>H:\Programmierung\Libs_Include\x64\PCL 1.8.0\3rdParty\Boost\include\boost-1_61;H:\Programmierung\Libs_Include\x64\OpenCV\include;H:\Programmierung\Libs_Include\x64\Basler\include;H:\Programmierung\Libs_Include\x64\open62541\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Programmierung\Libs_Include\x64\PCL 1.8.0\3rdParty\Boost\include\boost-1_61;C:\Programmierung\Libs_Include\x64\OpenCV\include;C:\Programmierung\Libs_Include\x64\Basler\include;C:\Programmierung\Libs_Include\x64\open62541\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>H:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;H:\Programmierung\Libs_Include\x64\Basler\lib\x64;H:\Programmierung\Libs_Include\x64\OpenCV\lib;H:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;C:\Programmierung\Libs_Include\x64\Basler\lib\x64;C:\Programmierung\Libs_Include\x64\OpenCV\lib;C:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world411.lib;Ws2_32.lib;open62541.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>

@@ -166,6 +166,41 @@ max=4000
 index=-1
 accessLevel=2
 
+// AlgorithmSelect
+[AlgorithmSelect]
+type=INT
+descr=WahlAlgorithmusFurBV
+unit=1-2
+value=1
+visible=true
+group=Bildverarbeitung
+toolTip=1: Verarbeitung Mittels Strulturelement und Finden von Rechtecken, 2: Verwendung von HoughLines
+imagePath=
+help=Verarbeitung Mittels Strulturelement und Finden von Rechtecken, 2: Verwendung von HoughLines
+defaultVal=1
+displayHint=
+min=1
+max=2
+index=-1
+accessLevel=2
+
+// Debug Mode, Show Images
+[DebugMode]
+type=BOOL
+descr=SelectDebugMode
+unit=BOOL
+value=false
+visible=true
+group=Bildverarbeitung
+toolTip=Show Evaluation Result
+imagePath=
+help=Show Evaluation Result
+defaultVal=false
+displayHint=
+min=false
+max=false
+index=-1
+accessLevel=2
 
 // DFTKernelSize
 [DFTKernelSize]
@@ -308,6 +343,96 @@ defaultVal=4
 displayHint=
 min=0
 max=100
+index=-1
+accessLevel=2
+
+// tolerance for angles in Hough Lines
+[AngleTolerance]
+type=INT
+descr=for rejecting non horizontal or vertical lines
+unit=pixels
+value=5
+visible=true
+group=BV
+toolTip=for rejecting non horizontal and vertical lines
+imagePath=
+help=for rejecting non horizontal or vertical lines
+defaultVal=5
+displayHint=
+min=0
+max=15
+index=-1
+accessLevel=2
+
+// Offset accepted for borders to be around middle area of image
+[AcceptedOffset]
+type=DOUBLE
+descr=(this factor)*imgSize defines the area in which border lines are accepted
+unit=0-100%
+value=0.15
+visible=true
+group=BV
+toolTip=defines valid border positions of marker
+imagePath=
+help = defines valid border positions of marker
+defaultVal=5
+displayHint=
+min=0
+max=1
+index=-1
+accessLevel=2
+
+// Hough Threshold, see HoughLinesP from OpenCV for reference
+[HoughThresh]
+type=INT
+descr=increasing this parameter will result in a higher number of lines detected
+unit=count
+value=50
+visible=true
+group=BV
+toolTip=minimal count of intersections needed for hough lines
+imagePath=
+help = minimal count of intersections needed for hough lines
+defaultVal=50
+displayHint=
+min=0
+max=150
+index=-1
+accessLevel=2
+
+// minimal line length, see HoughLinesP from OpenCV for reference
+[HoughLength]
+type=INT
+descr=minimal length of a line to be accepted as hough line
+unit=count
+value=70
+visible=true
+group=BV
+toolTip=minimal length of lines to be accepted as hough line
+imagePath=
+help = minimal length of lines to be accepted as hough line
+defaultVal=70
+displayHint=
+min=0
+max=150
+index=-1
+accessLevel=2
+
+// maximum gap length, see HoughLinesP from OpenCV for reference
+[HoughGapLength]
+type=INT
+descr=maximum gap between lines to still be accepted as one hough line
+unit=count
+value=70
+visible=true
+group=BV
+toolTip=maximum gap between lines to still be accepted as one hough line
+imagePath=
+help = maximum gap between lines to still be accepted as one hough line
+defaultVal=70
+displayHint=
+min=0
+max=150
 index=-1
 accessLevel=2
 

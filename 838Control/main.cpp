@@ -13,14 +13,6 @@ void log(boost::posix_time::ptime ts, unsigned int cat, std::string caller, std:
 
 int main()
 {
-
-
-	/*remove later*/
-	ImgProc findMark;
-	cv::Mat src = cv::imread("H:/WorkDir/AufnahmenAconity/S1_M1_750us.bmp", cv::IMREAD_GRAYSCALE);
-
-	findMark.getCenterOfMarker(&src);
-
 	LUNOBackend::maincontrol m_maincontrol("settings.def"); 
     std::cout << "Hello World!\n"; 
 

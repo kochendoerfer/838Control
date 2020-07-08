@@ -547,7 +547,6 @@ namespace LUNOBackend
 		return rc;
 	}
 
-
 	int toolControlMTX::extractAxisData()
 	{
 		int rc = -1;

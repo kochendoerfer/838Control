@@ -24,6 +24,9 @@ public:
 
 private:
 	//variables that need to be initialised using setting class
+	int m_AlgorithSelect = 0;
+	bool m_debugMode = false;
+	//morphology
 	int m_DTFKernelSize = 10;
 	int m_threshold = 90;
 	int m_erodeVerticalXSize = 2;
@@ -32,9 +35,17 @@ private:
 	int m_erodeHorizontalXSize = 17;
 	int m_erodeHorizontalYSize = 3;
 	int m_dilateHorizontalYSize = 4;
+	//hough lines
+	int m_angleTolerance = 0;
+	double m_AcceptedOffset = 0.15;
+	int m_houghThresh = 50;
+	int m_houghLineLength = 70;
+	int m_houghGapSize = 70;
 	LUNOBackend::SettingsVals *m_settings = NULL;
 	
 
+	cv::Point AlgoMorphRect(const cv::Mat * src);
+	cv::Point AlgoHough(const cv::Mat * src);
 	void getThresh(cv::Mat &src, cv::Mat &dst, int threshold, int threshFlag);
 	void erode(const cv::Mat &src, cv::Mat &dst, int sizeX, int sizeY, int structType);
 	void dilate(const cv::Mat &src, cv::Mat &dst, int sizeX, int sizeY, int structType);
