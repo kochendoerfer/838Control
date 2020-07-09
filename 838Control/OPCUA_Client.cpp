@@ -364,6 +364,8 @@ namespace LUNOBackend
 
 						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessRasterEnd";
 						writeBool(2, itemname, false);
+						itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
+						writeBool(2, itemname, false);
 
 						sigRasterEndRequest();
 					}
