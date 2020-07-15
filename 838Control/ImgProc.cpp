@@ -13,29 +13,13 @@ ImgProc::~ImgProc()
 void ImgProc::init(LUNOBackend::SettingsVals * settings)
 {
 	m_settings = settings;
-	//init variables using settings class
-	m_settings->getValInt("AlgorithmSelect", m_AlgorithSelect);
-	m_settings->getValBool("DebugMode", m_debugMode);
-	//for algorithm using morphology
-	m_settings->getValInt("DFTKernelSize", m_DTFKernelSize);
-	m_settings->getValInt("ImgBnThreshold", m_threshold);
-	m_settings->getValInt("ErodeVerticalSizeX", m_erodeVerticalXSize);
-	m_settings->getValInt("ErodeVerticalSizeY", m_erodeVerticalYSize);
-	m_settings->getValInt("ErodeHorizontalSizeX", m_erodeVerticalXSize);
-	m_settings->getValInt("ErodeHorizontalSizeY", m_erodeVerticalYSize);
-	m_settings->getValInt("DilateVerticalSizeX", m_dilateVerticalXSize);
-	m_settings->getValInt("DilateHorizontalSizeY", m_dilateHorizontalYSize);
-
-	//for algorithm using hough lines
-	m_settings->getValInt("AngleTolerance", m_angleTolerance);
-	m_settings->getValDouble("AcceptedOffset", m_AcceptedOffset);
-	m_settings->getValInt("HoughThresh", m_houghThresh);
-	m_settings->getValInt("HoughLength", m_houghLineLength);
-	m_settings->getValInt("HoghGapLength", m_houghGapSize);
 }
 
 cv::Point ImgProc::getCenterOfMarker(const cv::Mat *src)
 {
+	//init variables using settings class
+	m_settings->getValInt("AlgorithmSelect", m_AlgorithSelect);
+	m_settings->getValBool("DebugMode", m_debugMode);
 	sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Step 0");
 	///validate src image
 	if (validateImg(*src))
@@ -45,9 +29,24 @@ cv::Point ImgProc::getCenterOfMarker(const cv::Mat *src)
 		switch (m_AlgorithSelect)
 		{
 		case 1:
+			//for algorithm using morphology
+			m_settings->getValInt("DFTKernelSize", m_DTFKernelSize);
+			m_settings->getValInt("ImgBnThreshold", m_threshold);
+			m_settings->getValInt("ErodeVerticalSizeX", m_erodeVerticalXSize);
+			m_settings->getValInt("ErodeVerticalSizeY", m_erodeVerticalYSize);
+			m_settings->getValInt("ErodeHorizontalSizeX", m_erodeVerticalXSize);
+			m_settings->getValInt("ErodeHorizontalSizeY", m_erodeVerticalYSize);
+			m_settings->getValInt("DilateVerticalSizeX", m_dilateVerticalXSize);
+			m_settings->getValInt("DilateHorizontalSizeY", m_dilateHorizontalYSize);
 			pm = AlgoMorphRect(src);
 			break;
 		case 2:
+			//for algorithm using hough lines
+			m_settings->getValInt("AngleTolerance", m_angleTolerance);
+			m_settings->getValDouble("AcceptedOffset", m_AcceptedOffset);
+			m_settings->getValInt("HoughThresh", m_houghThresh);
+			m_settings->getValInt("HoughLength", m_houghLineLength);
+			m_settings->getValInt("HoghGapLength", m_houghGapSize);
 			pm = AlgoHough(src);
 			break;
 		default:
@@ -131,51 +130,74 @@ cv::Point ImgProc::AlgoHough(const cv::Mat * src)
 	//lines have to be either horizontal or vertical
 	int x = srcCopy.cols;
 	int y = srcCopy.rows;
-	auto it = lines.begin();
-	while (it != lines.end())
+	if (lines.size() > 4)
 	{
-		if (abs(it->val[0] - it->val[2]) > m_angleTolerance
-			&& abs(it->val[1] - it->val[3]) > m_angleTolerance)
-			it = lines.erase(it);
-		else
-			it++;
-	}
+		auto it = lines.begin();
+		while (it != lines.end())
+		{
+			if (abs(it->val[0] - it->val[2]) > m_angleTolerance
+				&& abs(it->val[1] - it->val[3]) > m_angleTolerance)
+				it = lines.erase(it);
+			else
+				it++;
+		}
 
-	//sort lines in horizontal and vertical lines
-	//get average of lines
-	std::vector<cv::Vec4i>hlines, vlines;
-	int yAvg = 0;
-	int yCount = 0;
-	int xAvg = 0;
-	int xCount = 0;
-	for (size_t i = 0; i < lines.size(); i++)
-	{
-		//horizontal lines
-		if (abs(lines[i][0] - lines[i][2]) > abs(lines[i][1] - lines[i][3]))
+		//sort lines in horizontal and vertical lines
+		//get average of lines
+		std::vector<cv::Vec4i>hlines, vlines;
+		int yAvg = 0;
+		int yCount = 0;
+		int xAvg = 0;
+		int xCount = 0;
+		for (size_t i = 0; i < lines.size(); i++)
 		{
-			if (lines[i][1] < y / 2 + y * m_AcceptedOffset
-				&& lines[i][1] > y / 2 - y * m_AcceptedOffset)
+			//horizontal lines
+			if (abs(lines[i][0] - lines[i][2]) > abs(lines[i][1] - lines[i][3]))
 			{
-				hlines.push_back(lines.at(i));
-				yAvg += (lines[i][1] + lines[i][3]) / 2;
-				yCount++;
+				if (lines[i][1] < y / 2 + y * m_AcceptedOffset
+					&& lines[i][1] > y / 2 - y * m_AcceptedOffset)
+				{
+					hlines.push_back(lines.at(i));
+					yAvg += (lines[i][1] + lines[i][3]) / 2;
+					yCount++;
+				}
+			}
+			//vertical lines
+			else if (abs(lines[i][0] - lines[i][2]) < abs(lines[i][1] - lines[i][3]))
+			{
+				if (lines[i][0] < x / 2 + x * m_AcceptedOffset
+					&& lines[i][0] > x / 2 - x * m_AcceptedOffset)
+				{
+					vlines.push_back(lines.at(i));
+					xAvg += (lines[i][0] + lines[i][2]) / 2;
+					xCount++;
+				}
 			}
 		}
-		//vertical lines
-		else if (abs(lines[i][0] - lines[i][2]) < abs(lines[i][1] - lines[i][3]))
+		xAvg /= xCount;
+		yAvg /= yCount;
+		cv::Point pm = cv::Point(xAvg, yAvg);
+		if (validateResult(pm, src->cols, src->rows, 0.2))
 		{
-			if (lines[i][0] < x / 2 + x * m_AcceptedOffset
-				&& lines[i][0] > x / 2 - x * m_AcceptedOffset)
-			{
-				vlines.push_back(lines.at(i));
-				xAvg += (lines[i][0] + lines[i][2]) / 2;
-				xCount++;
-			}
+			//emit found position
+			sigPosFound(pm);
+			sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Finished");
+			sigAlgStatus(0); //MarkerFound
+			return pm;
+		}
+		else
+		{
+			sigPosFound(cv::Point(-1, -1));
+			sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Could not find Marker");
+			sigAlgStatus(1); //MarkerNOTFound
+			return cv::Point(-1, -1);
 		}
 	}
-	xAvg /= xCount;
-	yAvg /= yCount;
-	return cv::Point(xAvg, yAvg);
+	else
+	{
+		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "no Lines found");
+	}
+	return cv::Point(-1, -1);
 }
 
 void ImgProc::getThresh(cv::Mat &src, cv::Mat &dst, int threshold, int threshFlag)
@@ -322,8 +344,8 @@ bool ImgProc::validateImg(const cv::Mat &src)
 		cv::Scalar mean, stddev;
 		cv::meanStdDev(src, mean, stddev, cv::Mat());
 		//does image have a high enough contrast
-		if (stddev.val[0] * 2 > 100)
-			return true;
+		//if (stddev.val[0] * 2 > 100)
+		//	return false;
 	}
 	return true;
 }

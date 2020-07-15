@@ -23,15 +23,14 @@ LUNOBackend::Basler::~Basler()
 		delete m_img;
 		m_img = NULL;
 	}
-
-	//try
-	//{
-	//	Pylon::PylonTerminate();
-	//}
-	//catch (Pylon::GenericException &e)
-	//{
-	//	sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_ERROR, "[Basler]", e.what());
-	//}
+	try
+	{
+		Pylon::PylonTerminate();
+	}
+	catch (Pylon::GenericException &e)
+	{
+		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_ERROR, "[Basler]", e.what());
+	}
 }
 
 bool LUNOBackend::Basler::init(std::string path, std::string filename)
