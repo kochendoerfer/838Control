@@ -161,6 +161,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;C:\Programmierung\Libs_Include\x64\Basler\lib\x64;C:\Programmierung\Libs_Include\x64\OpenCV\lib;C:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world411.lib;Ws2_32.lib;open62541.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>/NODEFAULTLIB:[LIBCMT.LIB]</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources\Settings.def" "$(TargetDir)" /Y</Command>
