@@ -18,8 +18,6 @@ int main()
 
 	m_maincontrol.init();
 	m_maincontrol.sigLogMsg.connect(log);
-	if (m_maincontrol.m_baslerSensor->getConnectionState())
-		m_maincontrol.m_baslerSensor->setExposureTime(1000);
 	m_maincontrol.run();
 	m_maincontrol.stop();
 }

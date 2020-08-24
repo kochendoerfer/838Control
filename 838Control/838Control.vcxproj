@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -120,6 +120,11 @@
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources\Settings.def" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" "N:\\" /Y
+xcopy "$(TargetDir)$(TargetName).pdb" "N:\\" /Y
+xcopy "$(TargetDir)Settings.def" "N:\\" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -162,11 +167,17 @@
       <AdditionalLibraryDirectories>C:\Programmierung\Libs_Include\$(Platform)\PCL 1.8.0\3rdParty\Boost\lib;C:\Programmierung\Libs_Include\x64\Basler\lib\x64;C:\Programmierung\Libs_Include\x64\OpenCV\lib;C:\Programmierung\Libs_Include\x64\open62541\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world411.lib;Ws2_32.lib;open62541.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>/NODEFAULTLIB:[LIBCMT.LIB]</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.LIB</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)Resources\Settings.def" "$(TargetDir)" /Y</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" "N:\\" /Y
+xcopy "$(TargetDir)$(TargetName).pdb" "N:\\" /Y
+xcopy "$(TargetDir)Settings.def" "N:\\" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AcqJoinedImg.cpp" />
@@ -182,6 +193,7 @@
     </ClCompile>
     <ClCompile Include="maincontrol.cpp" />
     <ClCompile Include="OPCUA_Client.cpp" />
+    <ClCompile Include="open62541.c" />
     <ClCompile Include="SettingsVals.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +206,7 @@
     <ClInclude Include="LUNOdefs.h" />
     <ClInclude Include="maincontrol.h" />
     <ClInclude Include="OPCUA_Client.h" />
+    <ClInclude Include="open62541.h" />
     <ClInclude Include="SettingsVals.h" />
   </ItemGroup>
   <ItemGroup>

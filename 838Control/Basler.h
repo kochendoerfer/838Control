@@ -5,7 +5,8 @@
 #include <boost/thread/mutex.hpp>
 
 #include <opencv2/core.hpp>
-#include <pylon/PylonIncludes.h>
+#include "pylon/PylonIncludes.h"
+//#include <pylon/PylonIncludes.h>
 
 #include "SettingsVals.h"
 

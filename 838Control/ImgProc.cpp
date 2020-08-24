@@ -19,8 +19,8 @@ cv::Point ImgProc::getCenterOfMarker(const cv::Mat *src)
 {
 	//init variables using settings class
 	m_settings->getValInt("AlgorithmSelect", m_AlgorithSelect);
-	m_settings->getValBool("DebugMode", m_debugMode);
-	sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Step 0");
+	//m_settings->getValBool("DebugMode", m_debugMode);
+	//sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Step 0");
 	///validate src image
 	if (validateImg(*src))
 	{

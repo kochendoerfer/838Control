@@ -1,7 +1,7 @@
 #include "OPCUA_Client.h"
 #include "lunodefs.h"
-#include <open62541/client_config_default.h>
-#include <open62541/client_highlevel.h>
+//#include <open62541/client_config_default.h>
+//#include <open62541/client_highlevel.h>
 
 namespace LUNOBackend
 {
@@ -15,18 +15,19 @@ namespace LUNOBackend
 
 		m_MTXPrefix = "MTX_SPS";
 
-		//UA_ClientConfig config = UA_ClientConfig_standard;
+		UA_ClientConfig config = UA_ClientConfig_default;
+		config.timeout = 5000;
 
-		m_clientReadHP = UA_Client_new();
-		m_clientWrite = UA_Client_new();
+		m_clientReadHP = UA_Client_new(config);
+		m_clientWrite = UA_Client_new(config);
 
-		UA_ClientConfig *configHP = new UA_ClientConfig();
-		configHP = UA_Client_getConfig(m_clientReadHP);
-		configHP->timeout = 5000;
+		//UA_ClientConfig *configHP = new UA_ClientConfig();
+		//configHP = UA_Client_getConfig(m_clientReadHP);
+		//configHP->timeout = 5000;
 
 		//UA_ClientConfig_setDefault(UA_Client_getConfig(m_clientReadHP));
-		UA_ClientConfig_setDefault(configHP);
-		UA_ClientConfig_setDefault(UA_Client_getConfig(m_clientWrite));
+		//UA_ClientConfig_setDefault(configHP);
+		//UA_ClientConfig_setDefault(UA_Client_getConfig(m_clientWrite));
 
 		m_threadHP = NULL;
 
@@ -274,6 +275,149 @@ namespace LUNOBackend
 		bool ProcesRasterEndLast = false;
 
 		bool CloseGUILast = false;
+
+		try {
+			while (m_running)
+			{
+				if (getConnectionState())
+				{
+					extractAxisData();
+					extractMachineData();
+
+					double MarkerPosX = 42.0;
+					double MarkerPosY = 4.20;
+
+					if (m_AxisData)
+					{
+						for (auto i = 0; i < m_AxisData->m_AxisData.size(); i++)
+						{
+							//if (m_AxisData->m_AxisData[i].getName().compare("X"))
+							//	MarkerPosX = m_AxisData->m_AxisData[i].getValue();
+							//
+							//if (m_AxisData->m_AxisData[i].getName().compare("Y"))
+							//	MarkerPosY = m_AxisData->m_AxisData[i].getValue();
+							MarkerPosX = m_AxisData->m_AxisData[0].getValue();
+							MarkerPosY = m_AxisData->m_AxisData[1].getValue();
+						}
+					}
+
+					//Handle Processing Start Requests
+					if (m_machineData.ProcessMarkerStart && !ProcessMarkerStartLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "FindMarker Request");
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessMarkerStart";
+						writeBool(2, itemname, false);
+
+						sigFindMarkerStartRequest();
+					}
+
+					ProcessMarkerStartLast = m_machineData.ProcessMarkerStart;
+
+					//Handle Processing Requests
+					if (m_machineData.ProcessMarkerImage && !ProcessMarkerImageLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "FindMarker Request");
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessMarkerImage";
+						writeBool(2, itemname, false);
+
+						sigFindMarkerRequest(MarkerPosX, MarkerPosY);
+					}
+
+					ProcessMarkerImageLast = m_machineData.ProcessMarkerImage;
+
+					//alle Marken wurden angefahren
+					if (m_machineData.ProcessMarkerEnd && !ProcessMarkerEndLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "FindMarkerEnd Request");
+
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessMarkerEnd";
+						writeBool(2, itemname, false);
+
+						sigFindMarkerEndRequest();
+					}
+					ProcessMarkerEndLast = m_machineData.ProcessMarkerEnd;
+
+					//Rasterbild Reset
+					if (m_machineData.ProcesRasterStart && !ProcessRasterStartLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Clear Raster Image Request");
+
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessRasterStart";
+						writeBool(2, itemname, false);
+
+						sigRasterStartRequest();
+					}
+					ProcessRasterStartLast = m_machineData.ProcesRasterStart;
+
+					//Handle Processing Requests
+					if (m_machineData.ProcesRasterImage && !ProcessRasterImageLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Raster Image Request");
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessRasterImage";
+						int rc = writeBool(2, itemname, false);
+						itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
+						rc = writeBool(2, itemname, true);
+						sigRasterRequest(MarkerPosX, MarkerPosY);
+					}
+					ProcessRasterImageLast = m_machineData.ProcesRasterImage;
+
+					//Bauraum abgeraster->Bild verarbeiten + speichern Request
+					if (m_machineData.ProcesRasterEnd && !ProcesRasterEndLast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Process Raster ImageEnd Request");
+
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessRasterEnd";
+						writeBool(2, itemname, false);
+						itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
+						writeBool(2, itemname, false);
+
+						sigRasterEndRequest();
+					}
+					ProcesRasterEndLast = m_machineData.ProcesRasterEnd;
+
+					if (m_machineData.CloseGUI && !CloseGUILast)
+					{
+						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Close GUI Request");
+
+						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_GUIClose";
+						writeBool(2, itemname, false);
+
+						sigCloseGUIRequest();
+					}
+					CloseGUILast = m_machineData.CloseGUI;
+				}
+				else
+				{
+					//no connectoin
+					sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_ERROR, "[MTX]", "No connection to tool trying reconnect");
+					//NO MTX try to reconnect
+					disconnect();
+					boost::this_thread::sleep_for(boost::chrono::milliseconds(1000));
+					connect();
+				}
+
+				boost::this_thread::sleep_for(boost::chrono::microseconds(THREAD_HP * 100));
+			}
+		}
+		catch (boost::thread_interrupted &)
+		{
+			m_running = false;
+		}
+
+		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Module main loop ended");
+	}
+
+	/*void toolControlMTX::runHP()
+	{
+		bool ProcessMarkerStartLast = false;
+		bool ProcessMarkerImageLast = false;
+		bool ProcessMarkerEndLast = false;
+
+		bool ProcessRasterStartLast = false;
+		bool ProcessRasterImageLast = false;
+		bool ProcesRasterEndLast = false;
+
+		bool CloseGUILast = false;
 		
 		try {
 			while (m_running)
@@ -401,7 +545,7 @@ namespace LUNOBackend
 		}
 
 		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Module main loop ended");
-	}
+	}*/
 
 	//Helper
 	int toolControlMTX::writeBool(int nodeID, std::string itemname, bool val)

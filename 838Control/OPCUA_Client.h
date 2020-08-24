@@ -1,5 +1,6 @@
 #pragma once
-#include "open62541/client.h"
+#include "open62541.h"
+//#include "open62541/"
 #include <boost/signals2.hpp>
 #include <boost/thread.hpp>
 #include "axisPosData.h"

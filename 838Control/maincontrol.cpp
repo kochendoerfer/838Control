@@ -64,14 +64,6 @@ bool LUNOBackend::maincontrol::init()
 
 	sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[Maincontrol]", "Initialising System");
 
-	sigInitStep("Initialising Camera ...");
-	m_baslerSensor = new Basler();
-	m_baslerSensor->sigLogMsg.connect(sigLogMsg);
-	m_baslerSensor->sigCamConnectionState.connect(boost::bind(&maincontrol::cameraState, this, _1));
-	m_baslerSensor->init(&m_settings);
-	m_baslerSensor->start();
-	boost::this_thread::sleep_for(boost::chrono::milliseconds(waitTime));
-	sigInitStep("Initialising Camera Done");
 
 	sigInitStep("Initialising PLC Connection ...");
 	m_opcclient = new LUNOBackend::toolControlMTX();
@@ -87,8 +79,20 @@ bool LUNOBackend::maincontrol::init()
 	m_opcclient->sigRasterRequest.connect(boost::bind(&maincontrol::addRasterImage, this, _1, _2));
 	m_opcclient->sigCloseGUIRequest.connect(boost::bind(&maincontrol::stop, this));
 
+	m_procRasterImage.init(&m_settings);
+	m_procRasterImage.sigLogMsg.connect(sigLogMsg);
+
 	boost::this_thread::sleep_for(boost::chrono::milliseconds(waitTime));
 	sigInitStep("Initialising PLC Connection Done");
+
+	sigInitStep("Initialising Camera ...");
+	m_baslerSensor = new Basler();
+	m_baslerSensor->sigLogMsg.connect(sigLogMsg);
+	m_baslerSensor->sigCamConnectionState.connect(boost::bind(&maincontrol::cameraState, this, _1));
+	m_baslerSensor->init(&m_settings);
+	m_baslerSensor->start();
+	boost::this_thread::sleep_for(boost::chrono::milliseconds(waitTime));
+	sigInitStep("Initialising Camera Done");
 
 	sigInitStep("Initialising Tool Done");
 	return rc;

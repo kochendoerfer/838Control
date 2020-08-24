@@ -110,6 +110,10 @@ bool LUNOBackend::Basler::setFramerate(double framerate)
 {
 	bool rc = true;
 	double *newFPS =0;
+	Pylon::CBooleanParameter frameEnable(m_nodemap, "AcquisitionFrameRateEnable");
+	frameEnable = true;
+	Pylon::CFloatParameter frameRate(m_nodemap, "AcquisitionFrameRateAbs");
+	frameRate = framerate;
 
 	//if (is_SetFrameRate(m_camHandle, framerate, newFPS) != IS_SUCCESS)
 	//{
@@ -203,6 +207,9 @@ bool LUNOBackend::Basler::connect()
 				if (m_settings->getValDouble("ExposureTime", expTime))
 					setExposureTime(expTime);
 
+				//set new frameerate
+				setFramerate(10);
+
 				// Remember the current pixel format.
 				std::string oldPixelFormat = (std::string) pixelFormat.GetValue();
 
@@ -218,9 +225,11 @@ bool LUNOBackend::Basler::connect()
 
 
 
-
-
-				m_camera.StartGrabbing();
+				//new
+				m_camera.MaxNumBuffer = 5;
+				m_camera.StartGrabbing(Pylon::GrabStrategy_LatestImageOnly);
+				//old
+				//m_camera.StartGrabbing();
 
 				m_isConnected = true;
 				sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[Basler]", "Camera connection established");

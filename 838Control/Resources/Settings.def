@@ -62,14 +62,14 @@ accessLevel=2
 [MTX_IP]
 type=String
 descr=MTX IP
-value=192.168.142.250
+value=172.17.17.224
 unit=
 visible=true
 group=Anlage
 toolTip=Laserleistun
 imagePath=alien2.png
 help=Laserleistung
-defaultVal=192.168.142.250
+defaultVal=172.17.17.224
 displayHint=
 min=0
 max=4000
@@ -134,17 +134,17 @@ accessLevel=2
 [ExposureTime]
 type=FLOAT
 descr=ExposureTime [ms]
-value=8.200
+value=1
 unit=
 visible=true
 group=Kamera
 toolTip=ExposureTime
 imagePath=alien2.png
 help=ExposureTime
-defaultVal=8000
+defaultVal=1
 displayHint=
 min=0
-max=10000
+max=1
 index=-1
 accessLevel=2
 
@@ -152,14 +152,14 @@ accessLevel=2
 [RasterImageFilename]
 type=String
 descr=RasterImageFilename
-value=C:\temp
+value=C:\temp\RasterImg\raster.png
 unit=
 visible=true
 group=CV
 toolTip=RasterImageFilename
 imagePath=
 help=RasterImageFilename
-defaultVal=C:\temp
+defaultVal=C:\temp\RasterImg\raster.png
 displayHint=
 min=0
 max=4000
@@ -438,16 +438,16 @@ accessLevel=2
 
 // size of Entire area to screen X
 [ImgSizeX]
-type=INT
+type=FLOAT
 descr=Größe Bereich Rastern X
 unit=mm
-value=170
+value=172.8
 visible=true
 group=Rastern
 toolTip=Größe Bereich Rastern X
 imagePath=
 help=Größe Bereich Rastern X
-defaultVal=170
+defaultVal=172.8
 displayHint=
 min=0
 max=300
@@ -456,16 +456,16 @@ accessLevel=2
 
 // size of Entire area to screen Y
 [ImgSizeY]
-type=INT
+type=FLOAT
 descr=Größe Bereich Rastern Y
 unit=mm
-value=170
+value=172.8
 visible=true
 group=Rastern
 toolTip=Größe Bereich Rastern Y
 imagePath=
 help=Größe Bereich Rastern Y
-defaultVal=170
+defaultVal=172.8
 displayHint=
 min=0
 max=300
