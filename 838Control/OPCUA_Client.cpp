@@ -240,21 +240,31 @@ namespace LUNOBackend
 			itemname += ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
 
 		rc = writeBool(2, itemname, true);
-		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Error finding Marker:");
+		sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Setting " + itemname + " = OK");
 	}
 
 	void toolControlMTX::setTransformation(cv::Point2f translation, cv::Point2f rotation, cv::Point2f scale)
 	{
 		bool rc = false;
-		rc = (writeFloat(2, m_MTXPrefix+ ".Globale_Variablen.g_tOPC.gIn_rSetTransX", translation.x)==0?true:false);
-		rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetTransY", translation.y) == 0 ? true : false);
+		//rc = (writeFloat(2, m_MTXPrefix+ ".Globale_Variablen.g_tOPC_gIn_rSetTransX", translation.x)==0?true:false);
+		//rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetTransY", translation.y) == 0 ? true : false);
+		//
+		//rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetRot", rotation.x) == 0 ? true : false);
+		//
+		//rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetScaleX", scale.x) == 0 ? true : false);
+		//rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetScaleY", scale.y) == 0 ? true : false);
+		//
+		//rc = (writeBool(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessMarkerDone", true) == 0 ? true : false);
+		rc = (writeFloat(2, m_MTXPrefix + ".PersistentVars.g_tOPC_gIn_rSetTransX", translation.x) == 0 ? true : false);
+		rc = (writeFloat(2, m_MTXPrefix + ".PersistentVars.g_tOPC_gIn_rSetTransY", translation.y) == 0 ? true : false);
 
-		rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetRot", rotation.x) == 0 ? true : false);
+		rc = (writeFloat(2, m_MTXPrefix + ".PersistentVars.g_tOPC_gIn_rSetRot", rotation.x) == 0 ? true : false);
 
-		rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetScaleX", scale.x) == 0 ? true : false);
-		rc = (writeFloat(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_rSetScaleY", scale.y) == 0 ? true : false);
+		rc = (writeFloat(2, m_MTXPrefix + ".PersistentVars.g_tOPC_gIn_rSetScaleX", scale.x) == 0 ? true : false);
+		rc = (writeFloat(2, m_MTXPrefix + ".PersistentVars.g_tOPC_gIn_rSetScaleY", scale.y) == 0 ? true : false);
 
 		rc = (writeBool(2, m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessMarkerDone", true) == 0 ? true : false);
+
 	}
 
 	void toolControlMTX::setCameraState(bool state)
@@ -319,8 +329,10 @@ namespace LUNOBackend
 						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "FindMarker Request");
 						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessMarkerImage";
 						writeBool(2, itemname, false);
-
+						keepAlive();
 						sigFindMarkerRequest(MarkerPosX, MarkerPosY);
+						//itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
+						//writeBool(2, itemname, true);
 					}
 
 					ProcessMarkerImageLast = m_machineData.ProcessMarkerImage;
@@ -354,9 +366,9 @@ namespace LUNOBackend
 					{
 						sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[MTX]", "Raster Image Request");
 						std::string itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gOut_bProcessRasterImage";
-						int rc = writeBool(2, itemname, false);
+						writeBool(2, itemname, false);
 						itemname = m_MTXPrefix + ".Globale_Variablen.g_tOPC.gIn_bProcessingOK";
-						rc = writeBool(2, itemname, true);
+						writeBool(2, itemname, true);
 						sigRasterRequest(MarkerPosX, MarkerPosY);
 					}
 					ProcessRasterImageLast = m_machineData.ProcesRasterImage;

@@ -58,6 +58,11 @@ cv::Point ImgProc::getCenterOfMarker(const cv::Mat *src)
 			sigPosFound(pm);
 			sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Finished");
 			sigAlgStatus(0); //MarkerFound
+			//cv::Mat img;
+			//src->copyTo(img);
+			//cv::line(img, cv::Point(pm.x, 0), cv::Point(pm.x, img.rows), cv::Scalar(0, 0, 255));
+			//cv::line(img, cv::Point(0, pm.y), cv::Point(img.cols, pm.y), cv::Scalar(0, 0, 255));
+			//cv::imshow("marker", img);
 			return pm;
 		}
 		else
@@ -116,6 +121,7 @@ cv::Point ImgProc::AlgoHough(const cv::Mat * src)
 	//static threshold
 	cv::threshold(srcCopy, thresh, 200, 255, cv::THRESH_BINARY);
 	thresh.copyTo(adaptive);
+	bool rc = false;
 	////adaptive threshold
 	//doCLAHE(src, clahe, 25);
 	//adaptiveThresh(clahe, adaptive, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 51, 10);
@@ -183,6 +189,8 @@ cv::Point ImgProc::AlgoHough(const cv::Mat * src)
 			sigPosFound(pm);
 			sigLogMsg(boost::posix_time::microsec_clock::universal_time(), LUNO_LOG_TYPE_INTERNAL_MESSAGE, "[detectMarker]", "Finished");
 			sigAlgStatus(0); //MarkerFound
+			cv::circle(srcCopy, pm, 5, cv::Scalar(0, 0, 255));
+			rc = cv::imwrite("C:/debugImg/marker.bmp", srcCopy);
 			return pm;
 		}
 		else

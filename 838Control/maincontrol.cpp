@@ -182,8 +182,22 @@ void LUNOBackend::maincontrol::detectMarker(double v1,double v2)
 
 	axispos.x = v1;
 	axispos.y = v2;
+	cv::Mat *img = m_baslerSensor->getValue();
+	markpos = findMark.getCenterOfMarker(img);//TODO BHO die Berechnung dauert scheinbar >20s evtl in einen Thread verlagern
+	//if valid
+	if (markpos != cv::Point2d(-1, -1))
+	{
+		
+		//transform pixel coordinates into axis coordinates
+		double mmPerPixel = 0;
+		m_settings.getValDouble("PixelSize", mmPerPixel);
+		//markpos.x = axispos.x + (img->cols / 2 - markpos.x) * mmPerPixel;
+		//markpos.y = axispos.y + (img->rows / 2 - markpos.y) * mmPerPixel;
 
-	markpos = findMark.getCenterOfMarker(m_baslerSensor->getValue());//TODO BHO die Berechnung dauert scheinbar >20s evtl in einen Thread verlagern
+		markpos.x = axispos.x + (img->rows / 2 - markpos.y) * mmPerPixel;
+		markpos.y = axispos.y - (markpos.x - img->cols / 2) * mmPerPixel; 
+	}
+
 	m_axisTransformation.addPoint(axispos, markpos);
 
 	findMark.sigLogMsg.disconnect_all_slots();
